@@ -50,20 +50,25 @@ if __name__ == '__main__':
     subplot = fig1.add_subplot(1,1,1)
     subplot.set_title('Sample mean')
     draw_subplot(subplot, raw_linex, raw_mu, mean_linex, mean_mu, (-1.5,1.5))
+    print "Sample mean exit..."
 
     # 標本分散の結果表示
     fig2 = plt.figure()
     subplot = fig2.add_subplot(1,1,1)
     subplot.set_title('Sample variance')
     draw_subplot(subplot, raw_linex, raw_s2, mean_linex, mean_s2, (-0.5,3.0))
+    print "Sample variance exit..."
 
     # 不偏分散の結果表示
     fig3 = plt.figure()
     subplot = fig3.add_subplot(1,1,1)
     subplot.set_title('Unbiased variance')
     draw_subplot(subplot, raw_linex, raw_u2, mean_linex, mean_u2, (-0.5,3.0))
+    print "Unbiased variance exit..."
 
     fig1.show()
     fig2.show()
     fig3.show()
 
+    # 20160120　グラフを表示するために必要
+    plt.show()

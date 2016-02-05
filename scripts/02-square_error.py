@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # 誤差関数（最小二乗法）による回帰分析
-#
+# 計算が簡単で厳密に答えを求められるので二乗誤差Edを判断基準として採用
 # 2015/04/22 ver1.0
 #
 
@@ -15,20 +15,42 @@ from numpy.random import normal
 #------------#
 # Parameters #
 #------------#
-N=10            # サンプルを取得する位置 x の個数
+#N=10            # サンプルを取得する位置 x の個数
+N=100 #サンプル数を増やすと次数が多くてもoverfittingを防げる
 M=[0,1,3,9]     # 多項式の次数
+# M=9であれば任意の10個の点を通過する曲線を作り出せる
+# 従って訓練データが10である今回の例ではM=9とすれば
+# 全てのデータに誤差0で一致する曲線を作り出すことができる
+# テストの識別率は悪化する（過学習）
 
 # データセット {x_n,y_n} (n=1...N) を用意
 def create_dataset(num):
+    # DataFrameはpandasのライブラリ
     dataset = DataFrame(columns=['x','y'])
     for i in range(num):
         x = float(i)/float(num-1)
         y = np.sin(2*np.pi*x) + normal(scale=0.3)
+        # Seriesは順序保持される点で1次元配列に似ている
+        # ただし、辞書のようにインデックスを文字列にできる
+        print Series([x,y], index=['x', 'y'])
+        """
+        x    1.000000
+        y    0.093874
+        dtype: float64
+        """
         dataset = dataset.append(Series([x,y], index=['x','y']),
                                  ignore_index=True)
+    print dataset
     return dataset
 
 # 平方根平均二乗誤差（Root mean square error）を計算
+# 多項式から予想される値とトレーニングセットの値が
+# 平均的にどの程度異なっているかを示す
+# 
+# Edは多項式から予測される値と訓練データの値の差の2乗を合計したものの半分
+# 2*Ed/Nで多項式から予測される値と訓練データの値の差の2乗の平均値
+# sqrt(2*Ed/N)で多項式から予測される値と訓練データの平均値
+#  平方根をとっているのでEdの2乗の効果を取り除いている
 def rms_error(dataset, f):
     err = 0.0
     for index, line in dataset.iterrows():
@@ -57,6 +79,7 @@ def resolve(dataset, m):
 
 # Main
 if __name__ == '__main__':
+    # train:N個,test:N個のデータを作成する
     train_set = create_dataset(N)
     test_set = create_dataset(N)
     df_ws = DataFrame()

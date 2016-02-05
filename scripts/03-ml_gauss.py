@@ -19,7 +19,6 @@ if __name__ == '__main__':
         ds = normal(loc=0, scale=1, size=datapoints)
         mu = np.mean(ds)                # 平均の推定値
         sigma = np.sqrt(np.var(ds))     # 標準偏差の推定値
-
         subplot = fig.add_subplot(2,2,c+1)
         subplot.set_title("N=%d" % datapoints)
         # 真の曲線を表示
@@ -36,3 +35,5 @@ if __name__ == '__main__':
         subplot.set_xlim(-4,4)
         subplot.set_ylim(0)
     fig.show()
+    #20151210add 以下を追加したところグラフが表示されるようになった
+    plt.show()
