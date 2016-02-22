@@ -22,14 +22,19 @@ Mu1 = [15,10]   # クラス t=+1 の中心座標
 N2 = 30         # クラス t=-1 のデータ数
 Mu2 = [0,0]     # クラス t=-1 の中心座標
 
+# データ群が離れていて分類が用意な場合と混在していて分類が困難な場合の2種類o
 Variances = [15,30] # 両クラス共通の分散（2種類の分散で計算を実施）
 
 
 # データセット {x_n,y_n,type_n} を用意
 def prepare_dataset(variance):
-    cov1 = np.array([[variance,0],[0,variance]])
-    cov2 = np.array([[variance,0],[0,variance]])
+    # 共分散行列を作成
+    # 共分散（非対角成分）がゼロなので2つの分布に関連はない
+    cov1 = np.array([[variance,0],[0,variance]]) # [[15  0], [ 0 15]]
+    cov2 = np.array([[variance,0],[0,variance]]) # [[30  0], [ 0 30]]
 
+    # multivariate_normal 二次元正規分布に従う乱数を作成する
+    # multivariate_normal(中心座標,
     df1 = DataFrame(multivariate_normal(Mu1,cov1,N1),columns=['x','y'])
     df1['type'] = 1
     df2 = DataFrame(multivariate_normal(Mu2,cov2,N2),columns=['x','y'])
@@ -86,9 +91,12 @@ def run_simulation(variance, data_graph, param_graph):
 # Main
 if __name__ == '__main__':
     fig = plt.figure()
-    # 2種類の分散で実行
+    # 2種類の分散で実行 c=0,1
     for c, variance in enumerate(Variances):
+        print c , variance
         subplots1 = fig.add_subplot(2,2,c+1)
         subplots2 = fig.add_subplot(2,2,c+2+1)
         run_simulation(variance, subplots1, subplots2)
+
     fig.show()
+    plt.show()

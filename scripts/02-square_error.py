@@ -40,7 +40,7 @@ def create_dataset(num):
         """
         dataset = dataset.append(Series([x,y], index=['x','y']),
                                  ignore_index=True)
-    print dataset
+#    print dataset
     return dataset
 
 # 平方根平均二乗誤差（Root mean square error）を計算
